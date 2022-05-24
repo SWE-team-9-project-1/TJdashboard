@@ -1,18 +1,48 @@
-import { Link, Outlet } from 'react-router-dom';
+import { Box, Paper, Stack } from '@mui/material';
+import { Link } from 'react-router-dom';
+import NavButton from './NavButton';
 
 function Nav(props) {
-    return (
-        <div>
+    return (<>
+        <Paper
+            id='nav-bar'
+        >
             <nav>
-                <Link to="/">Home</Link>
-                <Link to="/event-calendar">Event Calendar</Link>
-                <Link to="/class-dashboard">Class Dashboard</Link>
-                <Link to="/student-directory">Student Directory </Link>
-                <Link to="/teacher-directory">Teacher Directory </Link>
+                <Stack
+                    direction='row'
+                    alignItems='center'
+                    justifyContent='left'
+                    id='nav-stack'
+                >
+                    <Box onClick={() => props.setShowHomePage(true)}>
+                        <Link to="/" className='nav-link'>
+                            <NavButton>Home</NavButton>
+                        </Link>
+                    </Box>
+                    <Box onClick={() => props.setShowHomePage(false)}>
+                        <Link to="/event-calendar" className='nav-link'>
+                            <NavButton>Event Calendar</NavButton>
+                        </Link>
+                    </Box>
+                    <Box onClick={() => props.setShowHomePage(false)}>
+                        <Link to="/class-dashboard" className='nav-link'>
+                            <NavButton>Class Dashboard</NavButton>
+                        </Link>
+                    </Box>
+                    <Box onClick={() => props.setShowHomePage(false)}>
+                        <Link to="/student-directory" className='nav-link'>
+                            <NavButton>Student Directory</NavButton>
+                        </Link>
+                    </Box>
+                    <Box onClick={() => props.setShowHomePage(false)}>
+                        <Link to="/teacher-directory" className='nav-link'>
+                            <NavButton>Teacher Directory</NavButton>
+                        </Link>
+                    </Box>
+                </Stack>
             </nav>
-            <Outlet />
-        </div>
-    );
+        </Paper>
+    </>);
 }
 
 export default Nav;
