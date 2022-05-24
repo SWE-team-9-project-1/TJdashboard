@@ -25,9 +25,12 @@ const Class = (props) => {
 
 function ClassList(props) {
 
+    // ["class"].get().then(doc2 => console.log(doc2.data()
 
 
-    getDoc(doc(props.db, "teachers", "SMpMCG9BawhluN5iKvVF")).then((doc) => console.log(doc.data()))
+
+    //get class from teacher
+    const teachdoc = getDoc(doc(props.db, "teachers", "SMpMCG9BawhIuN5iKvVF")).then((doc) => console.log(doc.data()["class"].id))
 
 
 
