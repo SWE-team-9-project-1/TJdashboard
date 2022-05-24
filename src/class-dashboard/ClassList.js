@@ -1,12 +1,24 @@
 import { React, useState } from 'react'
 import data from "./ListData.json"
+import { collection, getDocs } from "firebase/firestore";
+
 
 function ClassList(props) {
-    const filteredData = data.filter((el) => {
+
+    const classdata = []
+    getDocs(collection(props.db, "classes")).then((allDocs) => { allDocs.forEach((doc) => classdata.push(doc)) })
+
+    console.log(classdata)
+
+
+
+    //search by teacher, grade, and student
+
+    const filteredData = data.filter((big) => {
         if (props.input === '') {
-            return el;
+            return big;
         } else {
-            return el.text.toLowerCase().includes(props.input)
+            return big.text.toLowerCase().includes(props.input)
         }
     })
     return (

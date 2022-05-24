@@ -4,7 +4,9 @@ import ClassList from "./ClassList";
 
 
 
+
 function ClassDashboard(props) {
+
 
 
     const [inputText, setInputText] = useState("");
@@ -30,7 +32,7 @@ function ClassDashboard(props) {
                     label="Search"
                 />
             </div>
-            <ClassList input={inputText} />
+            <ClassList db={props.db} input={inputText} />
         </div>
     );
 }
