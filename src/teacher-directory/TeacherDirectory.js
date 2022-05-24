@@ -1,15 +1,46 @@
 import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
+import * as React from 'react';
+import { styled } from '@mui/material/styles';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+
+const StyledTableCell = styled(TableCell)(({ theme }) => ({
+    [`&.${tableCellClasses.head}`]: {
+      backgroundColor: theme.palette.common.black,
+      color: theme.palette.common.white,
+    },
+    [`&.${tableCellClasses.body}`]: {
+      fontSize: 14,
+    },
+}));
+  
+const StyledTableRow = styled(TableRow)(({ theme }) => ({
+    '&:nth-of-type(odd)': {
+      backgroundColor: theme.palette.action.hover,
+    },
+    // hide last border
+    '&:last-child td, &:last-child th': {
+      border: 0,
+    },
+}));
+
+
 const Teacher = (props) => {
     return (
     <>
-        <tr>
-            <td>{props.data.name}</td>
-            <td>{props.data.class}</td>
-            <td>{props.data.num_students}</td>
-            <td>{props.data.years_taught}</td>
-        </tr>
+    <StyledTableRow key={props.data.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
+        <StyledTableCell component="th" scope="row">{props.data.name}</StyledTableCell>
+        <StyledTableCell align="right">{props.data.class}</StyledTableCell>
+        <StyledTableCell align="right">{props.data.num_students}</StyledTableCell>
+        <StyledTableCell align="right">{props.data.years_taught}</StyledTableCell>
+    </StyledTableRow>
     </>
     )
 }
@@ -30,15 +61,23 @@ function TeacherDirectory(props) {
 
     return (
     <>
-    <table>
-        <tr>
-            <th>Name</th>
-            <th>Class Taught</th>
-            <th># of Students</th>
-            <th># Years Taught</th>
-        </tr>
-        {teachers.map((teacher) => <Teacher data={teacher}/>)}
-    </table>
+    <h2>Teacher Directory</h2>
+    <TableContainer component={Paper}>
+    <Table sx={{ minWidth: 650}} aria-label="simple table">
+        <TableHead>
+            <StyledTableRow>
+                <StyledTableCell align="left">Name</StyledTableCell>
+                <StyledTableCell align="right">Class Taught</StyledTableCell>
+                <StyledTableCell align="right"># of Students</StyledTableCell>
+                <StyledTableCell align="right"># Years Taught</StyledTableCell>
+            </StyledTableRow>
+        </TableHead>
+
+        <TableBody>
+            {teachers.map((teacher) => <Teacher data={teacher}/> )}
+        </TableBody>
+    </Table>
+    </TableContainer>
     </>
     );
 }
