@@ -1,1 +1,14 @@
 @import url("https://cdn.syncfusion.com/ej2/material.css");
+.e-calendar {
+    background-color: white;
+    border: 10px solid red;
+}
+.e-content td.e-focused-date.e-today span.e-day {
+    background-color: white;
+    color: black;
+}
+.e-btn.e-today.e-flat.e-primary, .e-calendar .e-css.e-btn.e-today.e-flat.e-primary {
+    background-color: white;
+    border-color: black;
+    color: black;
+}
