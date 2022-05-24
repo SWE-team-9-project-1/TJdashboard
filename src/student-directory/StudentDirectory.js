@@ -1,21 +1,33 @@
 import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
+const Student = (props) => {
+    return (
+    <>
+        <tr>
+            <td>{props.data.name}</td>
+            <td>{props.data.grade}</td>
+            <td>{props.data.birthday}</td>
+            <td>{props.data.teacher}</td>
+            <td>{props.data.class}</td>
+        </tr>
+    </>
+    )
+}
+
 function StudentDirectory(props) {
     const db = props.db;
-    const [data, setData] = useState([]);
+    const [students, setStudents] = useState([]);
     
     useEffect(() => {
-        const data = [];
+        const students = [];
 
         getDocs(collection(db, "students"))
         .then((allDocs) => {
-            allDocs.forEach((doc) => data.push(({id: doc.id, ...doc.data() })) )
-
-            setData(data);
+            allDocs.forEach((doc) => students.push(({id: doc.id, ...doc.data() })) )
+            setStudents(students);
         })
-
-    }, [])
+    }, [db])
 
     return (
     <>
@@ -27,6 +39,7 @@ function StudentDirectory(props) {
             <th>Teacher</th>
             <th>Class</th>
         </tr>
+        {students.map((student) => <Student data={student}/>)}
     </table>
     </>
     );
