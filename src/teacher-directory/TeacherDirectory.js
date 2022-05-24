@@ -1,5 +1,6 @@
 import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { doc, getDoc } from "firebase/firestore";
 
 import * as React from 'react';
 import { styled } from '@mui/material/styles';
@@ -33,12 +34,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 const Teacher = (props) => {
+
+    // const [studentList, setStudentList] = useState([]);
+    // getDoc(doc(props.db, "classes", props.data.class.id))
+    // .then((doc) => setStudentList(doc.data().students))
+    // console.log(studentList);
+
     return (
     <>
     <StyledTableRow key={props.data.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         <StyledTableCell component="th" scope="row">{props.data.name}</StyledTableCell>
-        <StyledTableCell align="right">{props.data.class}</StyledTableCell>
-        <StyledTableCell align="right">{props.data.num_students}</StyledTableCell>
+        <StyledTableCell align="right">{}</StyledTableCell>
         <StyledTableCell align="right">{props.data.years_taught}</StyledTableCell>
     </StyledTableRow>
     </>
@@ -61,20 +67,20 @@ function TeacherDirectory(props) {
 
     return (
     <>
+    <Box sx={{ m: 2 }} />
     <h2>Teacher Directory</h2>
     <TableContainer component={Paper}>
     <Table sx={{ minWidth: 650}} aria-label="simple table">
         <TableHead>
             <StyledTableRow>
                 <StyledTableCell align="left">Name</StyledTableCell>
-                <StyledTableCell align="right">Class Taught</StyledTableCell>
-                <StyledTableCell align="right"># of Students</StyledTableCell>
+                <StyledTableCell align="right">Students</StyledTableCell>
                 <StyledTableCell align="right"># Years Taught</StyledTableCell>
             </StyledTableRow>
         </TableHead>
 
         <TableBody>
-            {teachers.map((teacher) => <Teacher data={teacher}/> )}
+            {teachers.map((teacher) => <Teacher data={teacher} db={db}/> )}
         </TableBody>
     </Table>
     </TableContainer>

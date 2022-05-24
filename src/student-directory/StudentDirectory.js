@@ -1,7 +1,8 @@
 import { collection, getDocs } from "firebase/firestore";
 import { useState, useEffect } from "react";
+import { doc, getDoc } from "firebase/firestore";
 
-import * as React from 'react';
+// import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -33,14 +34,17 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 const Student = (props) => {
+    const [teacherName, setTeacherName] = useState("");
+    getDoc(doc(props.db, "teachers", props.data.teacher.id))
+    .then((doc) => setTeacherName(doc.data().name));
+
     return (
     <>
     <StyledTableRow key={props.data.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         <StyledTableCell component="th" scope="row">{props.data.name}</StyledTableCell>
         <StyledTableCell align="right">{props.data.grade}</StyledTableCell>
         <StyledTableCell align="right">{props.data.birthday}</StyledTableCell>
-        <StyledTableCell align="right">{props.data.teacher}</StyledTableCell>
-        <StyledTableCell align="right">{props.data.class}</StyledTableCell>
+        <StyledTableCell align="right">{teacherName}</StyledTableCell>
     </StyledTableRow>
     </>
     )
@@ -71,12 +75,11 @@ function StudentDirectory(props) {
                 <StyledTableCell align="right">Grade</StyledTableCell>
                 <StyledTableCell align="right">Birthday</StyledTableCell>
                 <StyledTableCell align="right">Teacher</StyledTableCell>
-                <StyledTableCell align="right">Class</StyledTableCell>
             </StyledTableRow>
         </TableHead>
 
         <TableBody>
-            {students.map((student) => <Student data={student}/> )}
+            {students.map((student) => <Student data={student} db={db}/> )}
         </TableBody>
     </Table>
     </TableContainer>
