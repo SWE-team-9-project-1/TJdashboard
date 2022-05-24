@@ -22,7 +22,7 @@ function ClassDashboard(props) {
 
     return (
         <div className="main">
-            <h1>Class Dahboard</h1>
+            <h1>Class Dashboard</h1>
             <div className="search">
                 <TextField
                     id="outlined-basic"

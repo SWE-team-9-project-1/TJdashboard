@@ -1,14 +1,48 @@
-import { React, useState } from 'react'
+import { React, useState, useEffect } from 'react'
 import data from "./ListData.json"
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc } from "firebase/firestore";
+
+
+
+
+
+
+const Class = (props) => {
+    return (
+        <>
+            <tr>
+                <td>{props.data.grade}</td>
+                <td>{console.log(props.data.teacher)}</td>
+                {/* <td>{props.data.teacher}</td> */}
+                {/* <td>{props.data.students}</td> */}
+            </tr>
+        </>
+    )
+}
+
+
 
 
 function ClassList(props) {
 
-    const classdata = []
-    getDocs(collection(props.db, "classes")).then((allDocs) => { allDocs.forEach((doc) => classdata.push(doc)) })
 
-    console.log(classdata)
+
+    getDoc(doc(props.db, "teachers", "SMpMCG9BawhluN5iKvVF")).then((doc) => console.log(doc.data()))
+
+
+
+    const [classes, setClasses] = useState([]);
+    useEffect(() => {
+        const classes = [];
+        getDocs(collection(props.db, "classes"))
+            .then((allDocs) => {
+                allDocs.forEach((doc) => classes.push(({ id: doc.id, ...doc.data() })))
+                setClasses(classes);
+            })
+    }, [props.db])
+
+
+
 
 
 
@@ -22,12 +56,14 @@ function ClassList(props) {
         }
     })
     return (
-
-        <ul>
-            {filteredData.map((item) => (
-                <li key={item.id}>{item.text}</li>
-            ))}
-        </ul>
+        <>
+            <ul>
+                {filteredData.map((item) => (
+                    <li key={item.id}>{item.text}</li>
+                ))}
+            </ul>
+            {classes.map((clazz) => <Class data={clazz} />)}
+        </>
     );
 }
 
