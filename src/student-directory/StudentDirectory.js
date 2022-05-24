@@ -3,11 +3,19 @@ import { useState, useEffect } from "react";
 
 function StudentDirectory(props) {
     const db = props.db;
-    const [data, setData] = useState([[]]);
+    const [data, setData] = useState([]);
     
     useEffect(() => {
-        const students = [];
-    })
+        const data = [];
+
+        getDocs(collection(db, "students"))
+        .then((allDocs) => {
+            allDocs.forEach((doc) => data.push(({id: doc.id, ...doc.data() })) )
+
+            setData(data);
+        })
+
+    }, [])
 
     return (
     <>
