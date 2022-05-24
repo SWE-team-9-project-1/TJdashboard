@@ -1,0 +1,20 @@
+#nav-bar {
+    border-radius: 0;
+}
+
+#nav-stack {
+    margin-left: 10px;
+}
+
+.nav-button {
+    margin: 10px;
+}
+
+a.nav-link, a.nav-link:hover, a.nav-link:focus, a.nav-link:active {
+  text-decoration: none;
+  color: inherit;
+}
+
+#logo {
+    margin-top: 20px;
+}
