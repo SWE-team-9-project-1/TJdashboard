@@ -7,6 +7,8 @@ import ClassDashboard from './class-dashboard/ClassDashboard';
 import EventCalendar from './event-calendar/EventCalendar';
 import TeacherDirectory from './teacher-directory/TeacherDirectory';
 import StudentDirectory from './student-directory/StudentDirectory';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import Home from './home/Home';
 
 
 // Your web app's Firebase configuration
@@ -28,12 +30,33 @@ const db = getFirestore(app);
 
 function App() {
     return (
-        <div className="App">
-            <ClassDashboard />
-            <EventCalendar />
-            <TeacherDirectory />
-            <StudentDirectory />
-        </div>
+        <BrowserRouter
+            className='App'
+        >
+            <Routes>
+                <Route
+                    path='/'
+                    element={<Home />}
+                >
+                    <Route
+                        path='/class-dashboard'
+                        element={<ClassDashboard db={db}/>}
+                    />
+                    <Route
+                        path='/event-calendar'
+                        element={<EventCalendar db={db} />}
+                    />
+                    <Route
+                        path='/student-directory'
+                        element={<StudentDirectory db={db} />}
+                    />
+                    <Route
+                        path='/teacher-directory'
+                        element={<TeacherDirectory db={db} />}
+                    />
+                </Route>
+            </Routes>
+        </BrowserRouter>
     );
 }
 
