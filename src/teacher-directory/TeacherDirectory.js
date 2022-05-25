@@ -54,6 +54,9 @@ const Teacher = (props) => {
             getDocs(studentQuery)
             .then((doc) => {
                 doc.docs.forEach((studentDoc) => studentList.push(studentDoc.data().name))
+                studentList.sort((a,b) => {
+                    return (a.split(" ")[1]).localeCompare(b.split(" ")[1]);
+                })
                 setStudentList(studentList);
             })
 
@@ -87,7 +90,7 @@ const ExpandStudents = (props) => {
         </IconButton>
 
         <Collapse in={props.open} timeout="auto" unmountOnExit>
-            {props.studentList.map((name) => <p style={{lineHeight: '.3'}}>{name}</p>)}
+            {props.studentList.map((name) => <p key={name} style={{lineHeight: '.3'}}>{name}</p>)}
         </Collapse>
     </>
     )
@@ -103,6 +106,9 @@ function TeacherDirectory(props) {
         getDocs(collection(db, "teachers"))
         .then((allDocs) => {
             allDocs.forEach((doc) => teachers.push(({id: doc.id, ...doc.data() })) )
+            teachers.sort((a,b) => {
+                return (a.name.split(" ")[1]).localeCompare(b.name.split(" ")[1]);
+            })
             setTeachers(teachers);
         })
     }, [db])
@@ -123,7 +129,7 @@ function TeacherDirectory(props) {
         </TableHead>
 
         <TableBody>
-            {teachers.map((teacher) => <Teacher data={teacher} db={db}/> )}
+            {teachers.map((teacher) => <Teacher key={teacher.id} data={teacher} db={db}/> )}
         </TableBody>
     </Table>
     </TableContainer>

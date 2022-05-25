@@ -80,6 +80,9 @@ function StudentDirectory(props) {
         getDocs(collection(db, "students"))
         .then((allDocs) => {
             allDocs.forEach((doc) => students.push(({id: doc.id, ...doc.data() })) )
+            students.sort((a,b) => {
+                return (a.name.split(" ")[1]).localeCompare(b.name.split(" ")[1]);
+            })
             setStudents(students);
         })
     }, [db])
@@ -100,7 +103,7 @@ function StudentDirectory(props) {
         </TableHead>
 
         <TableBody>
-            {students.map((student) => <Student data={student} db={db}/> )}
+            {students.map((student) => <Student key={student.id} data={student} db={db}/> )}
         </TableBody>
     </Table>
     </TableContainer>
