@@ -61,9 +61,9 @@ function ClassDashboard(props) {
             scores: {}
         })
         //need the teachers id and i think that is from the use effect right above inside the return is an id field
-        setDoc(doc(props.db, teachers, chosenID), {
-            property: value,
-        });
+        // setDoc(doc(props.db, teachers, chosenID), {
+        //     property: value,
+        // });
 
         console.log(adddocfunction._key.path.segments[0])
         console.log(adddocfunction._key.path.segments[1])
