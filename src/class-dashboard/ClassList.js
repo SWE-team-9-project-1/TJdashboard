@@ -4,17 +4,17 @@ import { collection, getDocs, doc, getDoc } from "firebase/firestore";
 
 
 
-
+//figure out how to search for teachers and grade levels, possible a button that sets the state for the class component
 
 
 const Class = (props) => {
+    const [teacher, setTeacher] = useState([]);
+    getDoc(doc(props.db, "teachers", props.data.teacher.id)).then((doc) => setTeacher(doc.data()["name"]))
     return (
         <>
             <tr>
                 <td>{props.data.grade}</td>
-                <td>{console.log(props.data.teacher)}</td>
-                {/* <td>{props.data.teacher}</td> */}
-                {/* <td>{props.data.students}</td> */}
+                <td>{teacher}</td>
             </tr>
         </>
     )
@@ -26,11 +26,15 @@ const Class = (props) => {
 function ClassList(props) {
 
     // ["class"].get().then(doc2 => console.log(doc2.data()
-
+    const db = props.db
 
 
     //get class from teacher
+    // const teach = ""
+    // getDoc(doc(props.db, "students", "mE6ozwWnxCfZuyJUAqfE")).then((doc) => console.log(doc.data()["teacher"].id))
     const teachdoc = getDoc(doc(props.db, "teachers", "SMpMCG9BawhIuN5iKvVF")).then((doc) => console.log(doc.data()["class"].id))
+
+    // getDoc(doc(props.db, "teachers", teach)).then((doc) => console.log(doc.data()["name"]))
 
 
 
@@ -65,7 +69,7 @@ function ClassList(props) {
                     <li key={item.id}>{item.text}</li>
                 ))}
             </ul>
-            {classes.map((clazz) => <Class data={clazz} />)}
+            {classes.map((clazz) => <Class data={clazz} db={db} />)}
         </>
     );
 }
