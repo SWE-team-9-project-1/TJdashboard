@@ -1,10 +1,8 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
-
-import { Box } from '@mui/material';
 
 import * as React from 'react';
+import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -13,6 +11,11 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+
+import Collapse from '@mui/material/Collapse';
+import IconButton from '@mui/material/IconButton';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -36,30 +39,56 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 
 const Teacher = (props) => {
+    const [studentList, setStudentList] = useState([]);
+    const [gradeLevel, setGradeLevel] = useState();
 
-    const [studentList, setStudentList] = useState("");
-    // useEffect(() => {
-    // if(props.data.class) {
-    //     const studentList = "";
-        
-    //     getDoc(props.data.class)
-    //     .then((doc) => {
-    //         doc.data().students.forEach((studentRef) => {
-    //             getDoc(studentRef).then((studentDoc) => (studentList+(studentDoc.data().name)+","))
-    //         })
-    //         setStudentList(studentList);
-    //     })
-    // }
-    // }, [props.db])
+    useEffect(() => {
+        if(props.data.class) {
+            // get students
+            const studentList = [];
+
+            const studentQuery = query(
+                collection(props.db, 'students'),
+                where('class', '==', props.data.class)
+            )
+            getDocs(studentQuery)
+            .then((doc) => {
+                doc.docs.forEach((studentDoc) => studentList.push(studentDoc.data().name))
+                setStudentList(studentList);
+            })
+
+            // get grade level
+            getDoc(props.data.class)
+            .then((doc) => setGradeLevel(doc.data().gradeLevel));
+        }
+    }, [props.db])
 
 
+    const [open, setOpen] = useState(false);
     return (
     <>
     <StyledTableRow key={props.data.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         <StyledTableCell component="th" scope="row" sx={{fontWeight: 'bold'}}>{props.data.name}</StyledTableCell>
-        <StyledTableCell align="right">{}</StyledTableCell>
+        <StyledTableCell align="right">{gradeLevel}</StyledTableCell>
+        <StyledTableCell align="right">
+            <ExpandStudents studentList={studentList} open={open} setOpen={setOpen}/>
+        </StyledTableCell>
         <StyledTableCell align="right">{props.data.years_taught}</StyledTableCell>
     </StyledTableRow>
+    </>
+    )
+}
+
+const ExpandStudents = (props) => {
+    return(
+    <>
+        <IconButton aria-label="expand row" size="small" onClick={() => props.setOpen(!props.open)}>
+            {props.open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+        </IconButton>
+
+        <Collapse in={props.open} timeout="auto" unmountOnExit>
+            {props.studentList.map((name) => <p style={{lineHeight: '.3'}}>{name}</p>)}
+        </Collapse>
     </>
     )
 }
@@ -87,6 +116,7 @@ function TeacherDirectory(props) {
         <TableHead>
             <StyledTableRow>
                 <StyledTableCell align="left">Name</StyledTableCell>
+                <StyledTableCell align="right">Grade Taught</StyledTableCell>
                 <StyledTableCell align="right">Students</StyledTableCell>
                 <StyledTableCell align="right"># Years Taught</StyledTableCell>
             </StyledTableRow>

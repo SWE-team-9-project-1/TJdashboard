@@ -1,10 +1,7 @@
 import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
 import { useState, useEffect } from "react";
-// import { doc, getDoc } from "firebase/firestore";
 
 import { Box } from '@mui/material';
-
-// import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
