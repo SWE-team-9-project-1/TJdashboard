@@ -1,6 +1,8 @@
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
 import { useState, useEffect } from "react";
-import { doc, getDoc } from "firebase/firestore";
+// import { doc, getDoc } from "firebase/firestore";
+
+import { Box } from '@mui/material';
 
 // import * as React from 'react';
 import { styled } from '@mui/material/styles';
@@ -35,14 +37,35 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Student = (props) => {
     const [teacherName, setTeacherName] = useState("");
-    getDoc(doc(props.db, "teachers", props.data.teacher.id))
-    .then((doc) => setTeacherName(doc.data().name));
+    const [gradeLevel, setGradeLevel] = useState();
+
+    useEffect(() => {
+        if(props.data.class) {
+            // get grade level
+            getDoc(props.data.class)
+            .then((doc) => setGradeLevel(doc.data().gradeLevel));
+
+            // get teacher
+            const teacherQuery = query(
+                collection(props.db, 'teachers'),
+                where('class', '==', props.data.class)
+            )
+            getDocs(teacherQuery)
+            .then((doc) => {
+                doc.docs.length!==0 ? setTeacherName(doc.docs[0].data().name) : setTeacherName("N/A");
+            });
+        } else {
+            setGradeLevel("Not assigned class");
+            setTeacherName("Not assigned class");
+        }
+    }, [props.db])
+    
 
     return (
     <>
     <StyledTableRow key={props.data.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
-        <StyledTableCell component="th" scope="row">{props.data.name}</StyledTableCell>
-        <StyledTableCell align="right">{props.data.grade}</StyledTableCell>
+        <StyledTableCell component="th" scope="row" sx={{fontWeight: 'bold'}}>{props.data.name}</StyledTableCell>
+        <StyledTableCell align="right">{gradeLevel}</StyledTableCell>
         <StyledTableCell align="right">{props.data.birthday}</StyledTableCell>
         <StyledTableCell align="right">{teacherName}</StyledTableCell>
     </StyledTableRow>
@@ -66,7 +89,8 @@ function StudentDirectory(props) {
 
     return (
     <>
-    <h2>Student Directory</h2>
+    <Box sx={{ mx: "2em" }}>
+    <h1>Student Directory</h1>
     <TableContainer component={Paper}>
     <Table sx={{ minWidth: 650}} aria-label="simple table">
         <TableHead>
@@ -83,6 +107,7 @@ function StudentDirectory(props) {
         </TableBody>
     </Table>
     </TableContainer>
+    </Box>
     </>
     );
 }
