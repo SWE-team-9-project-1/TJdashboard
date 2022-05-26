@@ -19,20 +19,7 @@ const Class = (props) => {
     // }
     // setToDisplay(truthstatement)
     return (
-        <>
-
-            {toDisplay && <Card>
-                <Box onClick={() => props.setSelectedClassPage(props.data.id)}>
-                    <Link to="/" className='nav-link'>
-                        {props.data.gradeLevel}{props.data.id}
-                    </Link>
-
-                </Box>
-
-            </Card>}
-
-
-        </>
+        <p></p>
     )
 }
 
@@ -61,7 +48,7 @@ function ClassList(props) {
 
     const [displayed, setDisplayed] = useState([]);
     const [names, setNames] = useState([]);
-    props.classes.forEach(element => console.log(element.id));
+    // props.classes.forEach(element => console.log(element.id));
 
     useEffect(() => {
         const fetchData = async () => {
