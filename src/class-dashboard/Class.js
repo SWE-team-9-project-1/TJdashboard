@@ -19,14 +19,26 @@ function Class(props) {
         <>
 
             {<Card
-                varient="outlined"
-            >
-                <Box onClick={() => props.setSelectedClassPage(doc(props.db, "classes", props.data.id))}>
-                    <Link to="/Class-Page" className='nav-link'>
-                        {props.classes[props.data.id] + "      (Grade "}{props.data.gradeLevel + ")"}
-                    </Link>
 
-                </Box>
+                sx={{
+
+                }}
+            >
+                <Link to="/Class-Page" className='nav-link'>
+                    <Box
+                        sx={{
+                            minHeight: 50,
+                            bgcolor: "#f5f5f5"
+                        }}
+
+                        onClick={() => props.setSelectedClassPage(doc(props.db, "classes", props.data.id))}>
+
+                        {props.classes[props.data.id] + "      (Grade "}{props.data.gradeLevel + ")"}
+
+
+                    </Box>
+                </Link>
+
 
             </Card>}
 

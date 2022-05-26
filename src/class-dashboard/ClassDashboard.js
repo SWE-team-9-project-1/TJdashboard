@@ -1,8 +1,11 @@
 import { React, useState, useRef, useEffect } from "react";
 import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc } from "firebase/firestore";
-import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider } from '@mui/material';
+
+import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider, IconButton } from '@mui/material';
 import ClassList from "./ClassList";
 import Class from "./Class"
+import AddIcon from '../plus.png';
+
 
 
 
@@ -40,7 +43,10 @@ function ClassDashboard(props) {
     const classSearchRef = useRef();
     const [classAdded, setClassAdded] = useState(true)
 
-    useEffect(() => {
+
+
+    const littleFunction = () => {
+
         const q = query(
             collection(props.db, 'teachers'),
         );
@@ -54,6 +60,13 @@ function ClassDashboard(props) {
             };
 
         })))
+
+        setAddClass(false)
+
+    }
+    useEffect(() => {
+        littleFunction();
+
     }, []);
 
     const addClassToDatabase = async (name, grade, list) => {
@@ -73,7 +86,11 @@ function ClassDashboard(props) {
             }
         })
         bigFunction()
+
+        littleFunction()
+
     }
+
 
 
 
@@ -102,7 +119,9 @@ function ClassDashboard(props) {
     return (
         <div className="main">
             <Box>
-                <h1>Classes {<Button onClick={() => setAddClass(true)}>+</Button>}</h1>
+
+                <h1>Classes {<IconButton onClick={() => setAddClass(true)}><img src={AddIcon} alt='add student' width={20} height={20} /></IconButton>}</h1>
+
                 {addClass && <Box>
                     <Autocomplete
                         disablePortal
@@ -113,7 +132,11 @@ function ClassDashboard(props) {
                     <TextField inputRef={gradelevel} label="Grade Level"></TextField>
                     <Button
                         onClick={() => addClassToDatabase(teacherRef.current.value, parseInt(gradelevel.current.value), teacherlist)}
-                    >Add</Button>
+
+
+                    >Add
+                    </Button>
+
                 </Box>}
 
             </Box>
@@ -130,6 +153,8 @@ function ClassDashboard(props) {
                 />
 
             </div>
+            <p> </p>
+
             <Stack
                 // direction='column'
                 alignItems='stretch'
