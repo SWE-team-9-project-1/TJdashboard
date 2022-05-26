@@ -42,7 +42,7 @@ function Student(props) {
                 </Box>
                 {editing ? <EditStudent
                     onSave={() => {
-                        props.setScore(scoreRef.current.value);
+                        props.setScore(Number(scoreRef.current.value));
                         setEditing(false);
                     }}
                     onDiscard={() => {

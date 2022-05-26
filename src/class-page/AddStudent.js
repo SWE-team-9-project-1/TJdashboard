@@ -27,10 +27,12 @@ function AddStudent(props) {
                 disablePortal
                 options={studentList}
                 renderInput={(params) => <TextField {...params} error={isError} label='Name' inputRef={studentRef} />}
+                isOptionEqualToValue={(opt, val) => opt.label === val.label}
+                onChange={(_, value) => studentRef.current = value}
             />
             <Button
                 onClick={() => {
-                    const selected = studentList.filter(s => s.label === studentRef.current.value);
+                    const selected = studentList.filter(s => s.doc.id === studentRef.current.doc.id);
                     if (selected.length === 0) {
                         setIsError(true);
                         return;
@@ -38,7 +40,7 @@ function AddStudent(props) {
                         setIsError(false);
                     }
                     props.add(selected[0].doc);
-                    setStudentList(studentList.filter(s => s.label !== studentRef.current.value));
+                    setStudentList(studentList.filter(s => s.doc.id !== studentRef.current.doc.id));
                 }}
             >Add</Button>
         </Box>

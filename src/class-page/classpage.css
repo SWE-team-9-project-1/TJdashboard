@@ -36,3 +36,24 @@
 .edit-student-button-stack {
     margin-top: 15px;
 }
+
+#class-page-container {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+}
+
+#roster-container {
+    flex-grow: 1;
+}
+
+#class-stats-container {
+    flex-grow: 1;
+}
+
+#class-stats {
+    padding: 15px;
+    width: 20vw;
+}
