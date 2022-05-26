@@ -1,7 +1,7 @@
-import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where, updateDoc, deleteDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
-import { Box } from '@mui/material';
+import { Box, Button } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -41,8 +41,13 @@ const Student = (props) => {
     useEffect(() => {
         if(props.data.class && props.data.class.id!=undefined) {
             // get grade level
-            getDoc(props.data.class)
-            .then((doc) => setGradeLevel(doc.data().gradeLevel));
+                getDoc(props.data.class)
+                    .then((dc) => {
+                        const data = dc.data();
+                        if (data !== undefined) {
+                            setGradeLevel(dc.data().gradeLevel)
+                        }
+                    });
 
             // get teacher
             const teacherQuery = query(
@@ -67,6 +72,31 @@ const Student = (props) => {
         {/* <StyledTableCell align="right">{new Date(props.data.birthday.seconds*1000).toDateString()}</StyledTableCell> */}
         <StyledTableCell align="right">{props.data.birthday}</StyledTableCell>
         <StyledTableCell align="right">{teacherName}</StyledTableCell>
+        <StyledTableCell align="right">
+            <Button
+                variant="contained"
+                color="error"
+                onClick={() => {
+                    const syncDb = async () => {
+                        if (props.data.class !== null) {
+                            const classDoc = await getDoc(props.data.class);
+                            let newScores = {...classDoc.data().scores};
+                            delete newScores[props.data.id];
+                            updateDoc(props.data.class, {
+                                scores: newScores
+                            });
+                        }
+
+                        deleteDoc(doc(props.db, 'students', props.data.id));
+                        props.setStudents(props.students.filter(s => s.id !== props.data.id));
+                    };
+
+                    syncDb();
+                }}
+            >
+                Remove
+            </Button>
+        </StyledTableCell>
     </StyledTableRow>
     </>
     )
@@ -117,11 +147,18 @@ function StudentDirectory(props) {
                 <StyledTableCell align="right">Grade</StyledTableCell>
                 <StyledTableCell align="right">Birthday</StyledTableCell>
                 <StyledTableCell align="right">Teacher</StyledTableCell>
+                <StyledTableCell align="right">Remove Student</StyledTableCell>
             </StyledTableRow>
         </TableHead>
 
         <TableBody>
-            {students.map((student) => <Student key={student.id} data={student} db={db}/> )}
+            {students.map((student) => <Student
+                key={student.id}
+                data={student}
+                db={db}
+                students={students}
+                setStudents={setStudents}
+            /> )}
         </TableBody>
     </Table>
     </TableContainer>
