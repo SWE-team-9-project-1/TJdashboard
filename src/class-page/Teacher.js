@@ -8,11 +8,15 @@ function Teacher(props) {
             <Box
                 className='info-wrapper'
             >
-                <Typography
-                    variant='h3'
+                <Box
+                    className='inner-info-wrapper'
                 >
-                    {props.name}
-                </Typography>
+                    <Typography
+                        variant='h3'
+                    >
+                        {props.name}
+                    </Typography>
+                </Box>
             </Box>
         </Card>
     </>)

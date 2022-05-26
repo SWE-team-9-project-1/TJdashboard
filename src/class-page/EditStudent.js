@@ -9,16 +9,19 @@ function EditStudent(props) {
         >
             <Button
                 onClick={() => props.onSave()}
+                variant='contained'
             >
                 Save Changes
             </Button>
             <Button
                 onClick={() => props.onDiscard()}
+                variant='contained'
             >
                 Discard Changes
             </Button>
             <Button
                 onClick={() => props.onRemove()}
+                variant='contained'
             >
                 Remove From Class
             </Button>
