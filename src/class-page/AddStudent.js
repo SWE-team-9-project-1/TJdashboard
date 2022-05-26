@@ -31,6 +31,8 @@ function AddStudent(props) {
                 onChange={(_, value) => studentRef.current = value}
             />
             <Button
+                id='add-student-button'
+                variant='contained'
                 onClick={() => {
                     const selected = studentList.filter(s => s.doc.id === studentRef.current.doc.id);
                     if (selected.length === 0) {

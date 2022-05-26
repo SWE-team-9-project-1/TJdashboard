@@ -1,7 +1,7 @@
 import './classpage.css';
 import AddIcon from '../plus.png';
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Student from "./Student";
 import Teacher from "./Teacher";
@@ -69,10 +69,12 @@ function Roster(props) {
             const studentDocs = await getDocs(studentQuery);
 
             setState({
-                teacher: {
+                teacher: teacherDocs.docs.length > 0
+                ? {
                     ...teacherDocs.docs[0].data(),
                     doc: teacherDocs.docs[0]
-                },
+                }
+                : null,
                 students: studentDocs.docs.map(dc => {
                     return {
                         ...dc.data(),
@@ -92,14 +94,14 @@ function Roster(props) {
             alignItems='center'
             spacing={2}
         >
-            <Box
-                
-            >
-                <Typography
-                    variant='h4'
-                >
-                    Instructor
-                </Typography>
+            <Box>
+                <Box className='roster-label'>
+                    <Typography
+                        variant='h4'
+                    >
+                        Instructor
+                    </Typography>
+                </Box>
                 <Teacher name={state.teacher ? state.teacher.name : 'Teacher Unassigned'} />
             </Box>
             <Box>
@@ -108,6 +110,7 @@ function Roster(props) {
                     flexDirection='row'
                     justifyContent='flex-start'
                     alignItems='center'
+                    className='roster-label'
                 >
                     <Typography
                         variant='h4'

@@ -12,8 +12,16 @@
     flex-grow: 1;
     display: flex;
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.inner-info-wrapper {
+    display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: flex-start;
+    height: 100%;
 }
 
 .edit-button-wrapper {
@@ -43,6 +51,7 @@
     flex-direction: row;
     justify-content: center;
     align-items: flex-start;
+    margin-bottom: 2em;
 }
 
 #roster-container {
@@ -56,4 +65,13 @@
 #class-stats {
     padding: 15px;
     width: 20vw;
+}
+
+.roster-label {
+    margin-bottom: 1em;
+}
+
+#add-student-button {
+    margin-top: 0.5em;
+    margin-bottom: 2em;
 }

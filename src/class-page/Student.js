@@ -14,31 +14,33 @@ function Student(props) {
             <Box
                 className='info-wrapper'
             >
-                <Typography
-                    variant='h3'
-                >
-                    {props.name}
-                </Typography>
-                <Box
-                    display='flex'
-                    flexDirection='row'
-                    alignItems='center'
-                    justifyContent='flex-start'
-                    minHeight={60}
-                >
-                    <Typography variant='h5'>Grade:&nbsp;</Typography> {
-                        editing
-                        ? <TextField
-                            className='enter-score'
-                            defaultValue={props.score}
-                            inputRef={scoreRef}
-                        /> 
-                        : <Typography
-                            variant='h5'
-                        >
-                            {props.score}
-                        </Typography>
-                    }
+                <Box className='inner-info-wrapper'>
+                    <Typography
+                        variant='h3'
+                    >
+                        {props.name}
+                    </Typography>
+                    <Box
+                        display='flex'
+                        flexDirection='row'
+                        alignItems='center'
+                        justifyContent='flex-start'
+                        minHeight={60}
+                    >
+                        <Typography variant='h5'>Grade:&nbsp;</Typography> {
+                            editing
+                            ? <TextField
+                                className='enter-score'
+                                defaultValue={props.score}
+                                inputRef={scoreRef}
+                            /> 
+                            : <Typography
+                                variant='h5'
+                            >
+                                {props.score}
+                            </Typography>
+                        }
+                    </Box>
                 </Box>
                 {editing ? <EditStudent
                     onSave={() => {
