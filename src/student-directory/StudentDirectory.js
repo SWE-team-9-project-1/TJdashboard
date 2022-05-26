@@ -11,6 +11,8 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
+import NewStudent from './NewStudent.js';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -37,7 +39,7 @@ const Student = (props) => {
     const [gradeLevel, setGradeLevel] = useState();
 
     useEffect(() => {
-        if(props.data.class) {
+        if(props.data.class && props.data.class.id!=undefined) {
             // get grade level
             getDoc(props.data.class)
             .then((doc) => setGradeLevel(doc.data().gradeLevel));
@@ -57,12 +59,12 @@ const Student = (props) => {
         }
     }, [props.db])
     
-
     return (
     <>
     <StyledTableRow key={props.data.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         <StyledTableCell component="th" scope="row" sx={{fontWeight: 'bold'}}>{props.data.name}</StyledTableCell>
         <StyledTableCell align="right">{gradeLevel}</StyledTableCell>
+        {/* <StyledTableCell align="right">{new Date(props.data.birthday.seconds*1000).toDateString()}</StyledTableCell> */}
         <StyledTableCell align="right">{props.data.birthday}</StyledTableCell>
         <StyledTableCell align="right">{teacherName}</StyledTableCell>
     </StyledTableRow>
@@ -73,10 +75,10 @@ const Student = (props) => {
 function StudentDirectory(props) {
     const db = props.db;
     const [students, setStudents] = useState([]);
-    
-    useEffect(() => {
-        const students = [];
+    const [teachers, setTeachers] = useState([]);
 
+    const bigFunction = () => {
+        const students = [];
         getDocs(collection(db, "students"))
         .then((allDocs) => {
             allDocs.forEach((doc) => students.push(({id: doc.id, ...doc.data() })) )
@@ -85,12 +87,34 @@ function StudentDirectory(props) {
             })
             setStudents(students);
         })
+
+        const teachers = [];
+        getDocs(collection(db, "teachers"))
+        .then((allDocs) => {
+            allDocs.forEach((doc => teachers.push(({id: doc.id, ...doc.data() }))) )
+            teachers.sort((a,b) => {
+                return (a.name.split(" ")[1]).localeCompare(b.name.split(" ")[1]);
+            })
+            setTeachers(teachers);
+        })
+    }
+    
+    useEffect(() => {
+        bigFunction();
     }, [db])
 
     return (
     <>
     <Box sx={{ mx: "2em" }}>
-    <h1>Student Directory</h1>
+    {/* <div style={{float: "left"}}> */}
+        <h1>Student Directory</h1>
+    {/* </div> */}
+    {/* <div style={{float: "right", marginTop: 25}}>
+        <Button variant="outlined" onClick={addStudent}>Add New Student</Button>
+    </div> */}
+
+    <NewStudent teachers={teachers} db={db} bigFunction={bigFunction}/>
+    
     <TableContainer component={Paper}>
     <Table sx={{ minWidth: 650}} aria-label="simple table">
         <TableHead>
