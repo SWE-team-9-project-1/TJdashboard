@@ -1,7 +1,7 @@
+import './class-dashboard.css';
 import { React, useState, useRef, useEffect } from "react";
 import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc } from "firebase/firestore";
-
-import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider, IconButton } from '@mui/material';
+import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider, IconButton, Typography } from '@mui/material';
 import ClassList from "./ClassList";
 import Class from "./Class"
 import AddIcon from '../plus.png';
@@ -104,8 +104,12 @@ function ClassDashboard(props) {
         classdisplay[element.id] = "No Assigned Teacher"
     })
     teacherlist.forEach(element => {
-        classdisplay[element.class._key.path.segments[6]] = element.label;
+        if (element.class !== null) {
+            classdisplay[element.class._key.path.segments[6]] = element.label;
+        }
     })
+
+    console.log(Object.entries(classdisplay));
 
     const searchdisplay = {};
     for (const [key, value] of Object.entries(classdisplay)) {
@@ -117,31 +121,54 @@ function ClassDashboard(props) {
     }
 
     return (
-        <div className="main">
+        <div id="main">
             <Box>
-
-                <h1>Classes {<IconButton onClick={() => setAddClass(true)}><img src={AddIcon} alt='add student' width={20} height={20} /></IconButton>}</h1>
-
-                {addClass && <Box>
+                <Box
+                    display='flex'
+                    flexDirection='row'
+                    justifyContent='flex-start'
+                    alignItems='center'
+                >
+                    <Typography
+                        variant='h3'
+                    >
+                        Classes
+                    </Typography>
+                    <IconButton onClick={() => setAddClass(!addClass)}>
+                        <img src={AddIcon} alt='add student' width={35} height={35} />
+                    </IconButton>
+                </Box>
+                {addClass && <Stack
+                    className='search'
+                    id='add-class'
+                    direction='column'
+                    spacing={1}
+                >
                     <Autocomplete
                         disablePortal
                         options={teacherlist}
-                        renderInput={(params) => <TextField {...params} label="Teacher's name" inputRef={teacherRef} />}
+                        renderInput={(params) => <TextField
+                            sx={{
+                                width: '30vw'
+                            }}
+                            {...params}
+                            label="Teacher's name"
+                            inputRef={teacherRef}
+                        />}
                     />
-                    <p> </p>
                     <TextField inputRef={gradelevel} label="Grade Level"></TextField>
                     <Button
                         onClick={() => addClassToDatabase(teacherRef.current.value, parseInt(gradelevel.current.value), teacherlist)}
-
-
+                        variant='contained'
                     >Add
                     </Button>
-
-                </Box>}
+                </Stack>}
 
             </Box>
 
-            <div className="search">
+            <div
+                className="search"
+            >
                 <p> </p>
                 <TextField
                     id="outlined-basic"
@@ -151,17 +178,13 @@ function ClassDashboard(props) {
                     label="Search"
                     inputRef={searchbar}
                 />
-
             </div>
             <p> </p>
 
             <Stack
-                // direction='column'
                 alignItems='stretch'
-                spacing={1}
+                spacing={2}
                 justifyContent="flex-start"
-
-
             >
                 {classes.filter((clazz) => searchdisplay[clazz.id].toLowerCase().includes(inputText)).map((clazz) => <Class
                     key={clazz.id}
@@ -170,7 +193,6 @@ function ClassDashboard(props) {
                     setSelectedClassPage={props.setSelectedClassPage}
                     teachers={teacherlist}
                     classes={classdisplay}
-                // names={disp}
                 />)}
 
             </Stack>
