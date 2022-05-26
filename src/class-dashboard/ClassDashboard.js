@@ -1,6 +1,6 @@
 import './class-dashboard.css';
 import { React, useState, useRef, useEffect } from "react";
-import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider, IconButton, Typography } from '@mui/material';
 import ClassList from "./ClassList";
 import Class from "./Class"
@@ -40,8 +40,7 @@ function ClassDashboard(props) {
     const gradelevel = useRef();
     const [teacherlist, setTeacherlist] = useState([]);
     const teacherRef = useRef();
-    const classSearchRef = useRef();
-    const [classAdded, setClassAdded] = useState(true)
+    const [studentlist, setStudentlist] = useState([]);
 
 
 
@@ -63,10 +62,27 @@ function ClassDashboard(props) {
 
         setAddClass(false)
 
+
     }
+
+    const studentFunction = () => {
+        const q = query(
+            collection(props.db, 'students'),
+        );
+        getDocs(q).then(dcs => setStudentlist(dcs.docs.map(dc => {
+            return {
+
+                label: dc.data().name,
+                id: dc.id,
+                class: dc.data().class
+            };
+
+        })))
+    }
+
     useEffect(() => {
         littleFunction();
-
+        studentFunction();
     }, []);
 
     const addClassToDatabase = async (name, grade, list) => {
@@ -109,7 +125,6 @@ function ClassDashboard(props) {
         }
     })
 
-    console.log(Object.entries(classdisplay));
 
     const searchdisplay = {};
     for (const [key, value] of Object.entries(classdisplay)) {
@@ -193,6 +208,11 @@ function ClassDashboard(props) {
                     setSelectedClassPage={props.setSelectedClassPage}
                     teachers={teacherlist}
                     classes={classdisplay}
+                    students={studentlist}
+                    load1={bigFunction}
+                    load2={littleFunction}
+                    load3={studentFunction}
+                // names={disp}
                 />)}
 
             </Stack>
