@@ -1,7 +1,7 @@
 import './class-dashboard.css';
 import { React, useState, useRef, useEffect } from "react";
 import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc, deleteDoc } from "firebase/firestore";
-import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider, IconButton } from '@mui/material';
+import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider, IconButton, Typography } from '@mui/material';
 import ClassList from "./ClassList";
 import Class from "./Class"
 import AddIcon from '../plus.png';
@@ -125,7 +125,6 @@ function ClassDashboard(props) {
         }
     })
 
-    console.log(Object.entries(classdisplay));
 
     const searchdisplay = {};
     for (const [key, value] of Object.entries(classdisplay)) {
@@ -210,9 +209,9 @@ function ClassDashboard(props) {
                     teachers={teacherlist}
                     classes={classdisplay}
                     students={studentlist}
-                // load1={bigFunction()}
-                // load2={littleFunction()}
-                // load3={studentFunction()}
+                    load1={bigFunction}
+                    load2={littleFunction}
+                    load3={studentFunction}
                 // names={disp}
                 />)}
 

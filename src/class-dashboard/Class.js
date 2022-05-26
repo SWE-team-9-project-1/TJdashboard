@@ -15,30 +15,31 @@ function Class(props) {
     const [teachername, setteachername] = useState("");
     // console.log(props.students)
     const removeClass = async (id, teachers, students) => {
-        // students.forEach(element => {
-        //     if (element.class != null) {
-        //         if (props.data.id === element.class._key.path.segments[6]) {
-        //             updateDoc(doc(props.db, "students", element.id), {
-        //                 class: null
-        //             });
+        students.forEach(element => {
+            if (element.class != null) {
+                if (props.data.id === element.class._key.path.segments[6]) {
+                    updateDoc(doc(props.db, "students", element.id), {
+                        class: null
+                    });
 
-        //         }
-        //     }
-        // });
-        // teachers.forEach(element => {
-        //     if (element.class != null) {
-        //         if (props.data.id === element.class._key.path.segments[6]) {
-        //             updateDoc(doc(props.db, "teachers", element.id), {
-        //                 class: null
-        //             });
+                }
+            }
+        });
+        teachers.forEach(element => {
+            if (element.class != null) {
+                if (props.data.id === element.class._key.path.segments[6]) {
+                    updateDoc(doc(props.db, "teachers", element.id), {
+                        class: null
+                    });
 
-        //         }
-        //     }
-        // });
-        let remClass = await deleteDoc(props.db, "classes", id)
-        // props.load1()
-        // props.load2()
-        // props.load3()
+                }
+            }
+        });
+        deleteDoc(doc(props.db, "classes", id))
+        props.load1()
+        props.load2()
+        props.load3()
+
 
     }
     return (
@@ -63,6 +64,7 @@ function Class(props) {
                 <Button
                     color='error'
                     variant='contained'
+                    onClick={() => removeClass(props.data.id, props.teachers, props.students)}
                 >
                     Remove
                 </Button>
