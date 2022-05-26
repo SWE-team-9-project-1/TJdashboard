@@ -1,5 +1,5 @@
 import { React, useState, useRef, useEffect } from "react";
-import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc, deleteDoc } from "firebase/firestore";
 import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider, IconButton } from '@mui/material';
 import ClassList from "./ClassList";
 import Class from "./Class"
@@ -38,8 +38,7 @@ function ClassDashboard(props) {
     const gradelevel = useRef();
     const [teacherlist, setTeacherlist] = useState([]);
     const teacherRef = useRef();
-    const classSearchRef = useRef();
-    const [classAdded, setClassAdded] = useState(true)
+    const [studentlist, setStudentlist] = useState([]);
 
 
     const littleFunction = () => {
@@ -56,11 +55,30 @@ function ClassDashboard(props) {
             };
 
         })))
+
         setAddClass(false)
 
+
     }
+
+    const studentFunction = () => {
+        const q = query(
+            collection(props.db, 'students'),
+        );
+        getDocs(q).then(dcs => setStudentlist(dcs.docs.map(dc => {
+            return {
+
+                label: dc.data().name,
+                id: dc.id,
+                class: dc.data().class
+            };
+
+        })))
+    }
+
     useEffect(() => {
         littleFunction();
+        studentFunction();
     }, []);
 
     const addClassToDatabase = async (name, grade, list) => {
@@ -88,6 +106,7 @@ function ClassDashboard(props) {
 
 
 
+
     const classdisplay = {};
 
 
@@ -96,7 +115,9 @@ function ClassDashboard(props) {
         classdisplay[element.id] = "No Assigned Teacher"
     })
     teacherlist.forEach(element => {
-        classdisplay[element.class._key.path.segments[6]] = element.label;
+        if (element.class != null) {
+            classdisplay[element.class._key.path.segments[6]] = element.label;
+        }
     })
 
     const searchdisplay = {};
@@ -157,6 +178,10 @@ function ClassDashboard(props) {
                     setSelectedClassPage={props.setSelectedClassPage}
                     teachers={teacherlist}
                     classes={classdisplay}
+                    students={studentlist}
+                // load1={bigFunction()}
+                // load2={littleFunction()}
+                // load3={studentFunction()}
                 // names={disp}
                 />)}
 
