@@ -1,0 +1,82 @@
+.class-page-card {
+    width: 42vw;
+    min-height: 10vw;
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: stretch;
+    padding: 15px;
+}
+
+.info-wrapper {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+}
+
+.inner-info-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    height: 100%;
+}
+
+.edit-button-wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.edit-button-container {
+    justify-content: start;
+    flex-grow: 1;
+}
+
+.enter-score {
+    max-width: 100px;
+    max-height: 40px;
+}
+
+.edit-student-button-stack {
+    margin-top: 15px;
+}
+
+#class-page-container {
+    padding-top: 20px;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
+    margin-bottom: 2em;
+}
+
+#roster-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-self: flex-start;
+}
+
+#class-stats-container {
+    flex-grow: 1;
+}
+
+#class-stats {
+    padding: 15px;
+    width: 20vw;
+}
+
+.roster-label {
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+#add-student-button {
+    margin-top: 0.5em;
+    margin-bottom: 2em;
+}
