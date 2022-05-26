@@ -19,6 +19,7 @@ function Class(props) {
         <>
 
             {<Card
+
                 sx={{
 
                 }}
@@ -37,6 +38,7 @@ function Class(props) {
 
                     </Box>
                 </Link>
+
 
             </Card>}
 

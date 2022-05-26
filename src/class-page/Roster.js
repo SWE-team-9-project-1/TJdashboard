@@ -93,6 +93,7 @@ function Roster(props) {
             direction='column'
             alignItems='center'
             spacing={2}
+            width='fit-content'
         >
             <Box>
                 <Box className='roster-label'>
@@ -104,7 +105,7 @@ function Roster(props) {
                 </Box>
                 <Teacher name={state.teacher ? state.teacher.name : 'Teacher Unassigned'} />
             </Box>
-            <Box>
+            <Box width='100%'>
                 <Box
                     display='flex'
                     flexDirection='row'
