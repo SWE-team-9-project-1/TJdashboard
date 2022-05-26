@@ -1,4 +1,4 @@
-import { collection, getDocs, doc, getDoc, query, where } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, query, where, deleteDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
 import * as React from 'react';
@@ -11,6 +11,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Button from '@mui/material/Button';
 
 import Collapse from '@mui/material/Collapse';
 import IconButton from '@mui/material/IconButton';
@@ -81,6 +82,18 @@ const Teacher = (props) => {
             <ExpandStudents studentList={studentList} open={open} setOpen={setOpen}/>
         </StyledTableCell>
         <StyledTableCell align="right">{props.data.years_taught}</StyledTableCell>
+        <StyledTableCell align="right">
+            <Button
+                variant="contained"
+                color="error"
+                onClick = {() => {
+                    deleteDoc(doc(props.db, 'teachers', props.data.id));
+                    props.bigFunction();
+                }}
+            >
+                Remove
+            </Button>
+        </StyledTableCell>
     </StyledTableRow>
     </>
     )
@@ -135,11 +148,12 @@ function TeacherDirectory(props) {
                 <StyledTableCell align="right">Grade Taught</StyledTableCell>
                 <StyledTableCell align="right">Students</StyledTableCell>
                 <StyledTableCell align="right"># Years Taught</StyledTableCell>
+                <StyledTableCell align="right">Remove Student</StyledTableCell>
             </StyledTableRow>
         </TableHead>
 
         <TableBody>
-            {teachers.map((teacher) => <Teacher key={teacher.id} data={teacher} db={db}/> )}
+            {teachers.map((teacher) => <Teacher key={teacher.id} data={teacher} db={db} bigFunction={bigFunction}/> )}
         </TableBody>
     </Table>
     </TableContainer>
