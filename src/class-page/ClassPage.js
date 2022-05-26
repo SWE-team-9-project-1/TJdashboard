@@ -22,6 +22,12 @@ function ClassPage(props) {
     }
 
     const numStudents = Object.keys(clazz.scores).length;
+    let avgScore;
+    if (numStudents == 0) {
+        avgScore = 'N/A';
+    } else {
+        avgScore = Math.round(Object.values(clazz.scores).reduce((psum, elt) => psum + elt, 0) / numStudents);
+    }
 
     return (<>
         <Box id='class-page-container'>
@@ -46,7 +52,7 @@ function ClassPage(props) {
                 <ClassStats
                     gradeLevel={clazz.gradeLevel}
                     numStudents={numStudents}
-                    avgScore={Math.round(Object.values(clazz.scores).reduce((psum, elt) => psum + elt, 0) / numStudents)}
+                    avgScore={avgScore}
                 />
             </Box>
         </Box>

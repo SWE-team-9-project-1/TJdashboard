@@ -46,6 +46,7 @@ function Class(props) {
         <>
 
             {<Card
+
                 sx={{
 
                 }}
@@ -65,6 +66,7 @@ function Class(props) {
                     </Box>
                 </Link>
                 <Button onClick={() => removeClass(props.data.id, props.teachers, props.students)}>Rem</Button>
+
 
             </Card>}
 

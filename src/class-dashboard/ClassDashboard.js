@@ -8,6 +8,7 @@ import AddIcon from '../plus.png';
 
 
 
+
 function ClassDashboard(props) {
     const [inputText, setInputText] = useState("");
     let inputHandler = () => {
@@ -41,7 +42,9 @@ function ClassDashboard(props) {
     const [studentlist, setStudentlist] = useState([]);
 
 
+
     const littleFunction = () => {
+
         const q = query(
             collection(props.db, 'teachers'),
         );
@@ -98,6 +101,7 @@ function ClassDashboard(props) {
             }
         })
         bigFunction()
+
         littleFunction()
 
     }
@@ -132,7 +136,9 @@ function ClassDashboard(props) {
     return (
         <div className="main">
             <Box>
+
                 <h1>Classes {<IconButton onClick={() => setAddClass(true)}><img src={AddIcon} alt='add student' width={20} height={20} /></IconButton>}</h1>
+
                 {addClass && <Box>
                     <Autocomplete
                         disablePortal
@@ -144,8 +150,10 @@ function ClassDashboard(props) {
                     <Button
                         onClick={() => addClassToDatabase(teacherRef.current.value, parseInt(gradelevel.current.value), teacherlist)}
 
+
                     >Add
                     </Button>
+
                 </Box>}
 
             </Box>
@@ -163,6 +171,7 @@ function ClassDashboard(props) {
 
             </div>
             <p> </p>
+
             <Stack
                 // direction='column'
                 alignItems='stretch'
