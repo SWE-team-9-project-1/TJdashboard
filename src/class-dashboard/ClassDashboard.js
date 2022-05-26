@@ -1,21 +1,13 @@
 import { React, useState, useRef, useEffect } from "react";
 import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc } from "firebase/firestore";
-import { Box, Paper, Stack, Card, TextField, Button, Autocomplete } from '@mui/material';
+import { Box, Paper, Stack, Card, TextField, Button, Autocomplete, Divider } from '@mui/material';
 import ClassList from "./ClassList";
 import Class from "./Class"
 
 
 
-function useForceUpdate() {
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue(value => value + 1); // update the state to force render
-}
 
 function ClassDashboard(props) {
-    const forceUpdate = useForceUpdate();
-
-
-
     const [inputText, setInputText] = useState("");
     let inputHandler = () => {
         //convert input text to lower case
@@ -25,14 +17,19 @@ function ClassDashboard(props) {
 
 
     const [classes, setClasses] = useState([]);
-    useEffect(() => {
+    const bigFunction = () => {
         const classes = [];
         getDocs(collection(props.db, "classes"))
             .then((allDocs) => {
-                allDocs.forEach((doc) => classes.push(({ id: doc.id, ...doc.data() })))
+                allDocs.forEach((doc) => classes.push(({ id: doc.id, ...doc.data(), doc: doc })))
                 setClasses(classes);
             })
+    }
+    useEffect(() => {
+        bigFunction()
     }, [props.db]);
+
+
 
 
     const searchbar = useRef();
@@ -40,7 +37,8 @@ function ClassDashboard(props) {
     const gradelevel = useRef();
     const [teacherlist, setTeacherlist] = useState([]);
     const teacherRef = useRef();
-
+    const classSearchRef = useRef();
+    const [classAdded, setClassAdded] = useState(true)
 
     useEffect(() => {
         const q = query(
@@ -58,10 +56,6 @@ function ClassDashboard(props) {
         })))
     }, []);
 
-
-
-
-
     const addClassToDatabase = async (name, grade, list) => {
 
         let adddocvar = await addDoc(collection(props.db, "classes"), {
@@ -76,6 +70,31 @@ function ClassDashboard(props) {
                     name: element.label,
                     years_taught: element.years_taught
                 });
+            }
+        })
+        bigFunction()
+    }
+
+
+
+
+
+    const classdisplay = {};
+
+
+
+    classes.forEach(element => {
+        classdisplay[element.id] = "No Assigned Teacher"
+    })
+    teacherlist.forEach(element => {
+        classdisplay[element.class._key.path.segments[6]] = element.label;
+    })
+
+    const searchdisplay = {};
+    for (const [key, value] of Object.entries(classdisplay)) {
+        classes.forEach(x => {
+            if (key === x.id) {
+                searchdisplay[key] = (value + "   (Grade" + x.gradeLevel + ")")
             }
         })
     }
@@ -97,11 +116,6 @@ function ClassDashboard(props) {
                     >Add</Button>
                 </Box>}
 
-                {/* {addClass && <p>Teacher's Name</p>}
-                {addClass && <TextField inputRef={teacheradd}>Teacher's Name</TextField>}
-                {addClass && <p>Grade Level</p>}
-                {addClass && <TextField inputRef={gradelevel}>Grade Level</TextField>}
-                {addClass && <Button onClick={() => addClassToDatabase(teacheradd.current.value, gradelevel.current.value)}>Submit</Button>} */}
             </Box>
 
             <div className="search">
@@ -118,21 +132,24 @@ function ClassDashboard(props) {
             </div>
             <Stack
                 // direction='column'
-                alignItems='left'
+                alignItems='stretch'
                 spacing={1}
+                justifyContent="flex-start"
+
+
             >
-                {classes.map((clazz) => <Class
+                {classes.filter((clazz) => searchdisplay[clazz.id].toLowerCase().includes(inputText)).map((clazz) => <Class
                     key={clazz.id}
                     data={clazz}
                     db={props.db}
                     setSelectedClassPage={props.setSelectedClassPage}
                     teachers={teacherlist}
+                    classes={classdisplay}
                 // names={disp}
                 />)}
 
             </Stack>
-            {/* <ClassList db={props.db} input={inputText} classes={classes} /> */}
-            <Box component="form">I AM A BOX</Box>
+
         </div>
 
     );
