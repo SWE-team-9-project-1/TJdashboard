@@ -148,7 +148,7 @@ function TeacherDirectory(props) {
                 <StyledTableCell align="right">Grade Taught</StyledTableCell>
                 <StyledTableCell align="right">Students</StyledTableCell>
                 <StyledTableCell align="right"># Years Taught</StyledTableCell>
-                <StyledTableCell align="right">Remove Student</StyledTableCell>
+                <StyledTableCell align="right">Remove Teacher</StyledTableCell>
             </StyledTableRow>
         </TableHead>
 
