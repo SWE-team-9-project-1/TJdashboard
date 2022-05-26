@@ -1,7 +1,8 @@
-import { collection, getDocs, doc, getDoc, query, where, addDoc } from "firebase/firestore";
+import { collection, getDocs, query, where, addDoc } from "firebase/firestore";
 import { useState, useRef, useEffect } from "react";
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
+import { Box } from '@mui/material';
 
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
@@ -45,14 +46,16 @@ const NewStudent = (props) => {
     return (
         <div style={{marginBottom: 20}}>
         <form onSubmit={handleSubmit}>
-            <TextField id="name" label="Name" variant="standard" size="small" type="text" inputRef={nameRef}/>
-            <TextField id="bday" label="Birthday (mm/dd/yyyy)" variant="standard" size="small" type="text" inputRef={birthdayRef} sx={{marginLeft: 1.5}}/>
+        <Box display="flex" flexDirection="row">
+            <TextField id="name" label="Name" variant="outlined" size="small" type="text" inputRef={nameRef}/>
+            <TextField id="bday" label="Birthday (mm/dd/yyyy)" variant="outlined" size="small" type="text" inputRef={birthdayRef} sx={{marginLeft: 2}}/>
 
-            <InputLabel id="teacher">Teacher</InputLabel>
-            <Select labelId="teacher" id="teacher" label="Teacher" value={teacher} size="small" onChange={handleSelect}>
+            <InputLabel id="teacher" sx={{marginLeft: 2, marginTop: 1}}>Teacher</InputLabel>
+            <Select labelId="teacher" id="teacher" label="Teacher" value={teacher} size="small" onChange={handleSelect} sx={{marginLeft: 1}}>
                 {props.teachers.map((teacher) => <MenuItem value={teacher.name}>{teacher.name}</MenuItem>)}
             </Select>
-            <Button variant="outlined" type="submit" sx={{marginTop: 1.2, marginLeft: 1.5}}>Add New Student</Button>
+            <Button variant="outlined" type="submit" sx={{marginLeft: 2}}>Add New Student</Button>
+        </Box>
         </form>
         </div>
     )

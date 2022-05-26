@@ -17,6 +17,8 @@ import IconButton from '@mui/material/IconButton';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
+import NewTeacher from './NewTeacher.js';
+
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
       backgroundColor: theme.palette.common.black,
@@ -40,7 +42,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 const Teacher = (props) => {
     const [studentList, setStudentList] = useState([]);
-    const [gradeLevel, setGradeLevel] = useState();
+    const [gradeLevel, setGradeLevel] = useState("");
 
     useEffect(() => {
         if(props.data.class) {
@@ -63,6 +65,8 @@ const Teacher = (props) => {
             // get grade level
             getDoc(props.data.class)
             .then((doc) => setGradeLevel(doc.data().gradeLevel));
+        } else {
+            setGradeLevel("Not assigned class")
         }
     }, [props.db])
 
@@ -99,8 +103,8 @@ const ExpandStudents = (props) => {
 function TeacherDirectory(props) {
     const db = props.db;
     const [teachers, setTeachers] = useState([]);
-    
-    useEffect(() => {
+
+    const bigFunction = () => {
         const teachers = [];
 
         getDocs(collection(db, "teachers"))
@@ -111,12 +115,18 @@ function TeacherDirectory(props) {
             })
             setTeachers(teachers);
         })
+    }
+    
+    useEffect(() => {
+        bigFunction();
     }, [db])
 
     return (
     <>
     <Box sx={{ mx: "2em" }}>
     <h1>Teacher Directory</h1>
+    <NewTeacher bigFunction={bigFunction} db={db}/>
+
     <TableContainer component={Paper}>
     <Table sx={{ minWidth: 650}} aria-label="simple table">
         <TableHead>

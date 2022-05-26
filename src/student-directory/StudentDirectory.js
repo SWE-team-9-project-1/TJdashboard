@@ -106,13 +106,7 @@ function StudentDirectory(props) {
     return (
     <>
     <Box sx={{ mx: "2em" }}>
-    {/* <div style={{float: "left"}}> */}
-        <h1>Student Directory</h1>
-    {/* </div> */}
-    {/* <div style={{float: "right", marginTop: 25}}>
-        <Button variant="outlined" onClick={addStudent}>Add New Student</Button>
-    </div> */}
-
+    <h1>Student Directory</h1>
     <NewStudent teachers={teachers} db={db} bigFunction={bigFunction}/>
     
     <TableContainer component={Paper}>
