@@ -1,5 +1,5 @@
 
-import { Box, Paper, Stack, Card, Button } from '@mui/material';
+import { Box, Paper, Stack, Card, Typography, Button } from '@mui/material';
 import { Link } from 'react-router-dom';
 import { React, useState, useRef, useEffect } from "react";
 import { collection, getDocs, doc, getDoc, query, where, addDoc, setDoc, deleteDoc, updateDoc } from "firebase/firestore";
@@ -42,35 +42,31 @@ function Class(props) {
 
     }
     return (
-
         <>
-
-            {<Card
-
-                sx={{
-
-                }}
-            >
-                <Link to="/Class-Page" className='nav-link'>
-                    <Box
-                        sx={{
-                            minHeight: 50,
-                            bgcolor: "#f5f5f5"
-                        }}
-
-                        onClick={() => props.setSelectedClassPage(doc(props.db, "classes", props.data.id))}>
-
-                        {props.classes[props.data.id] + "      (Grade "}{props.data.gradeLevel + ")"}
-
-
-                    </Box>
-                </Link>
-                <Button onClick={() => removeClass(props.data.id, props.teachers, props.students)}>Rem</Button>
-
-
-            </Card>}
-
-
+            <Card className='class-card'>
+                <Box
+                    onClick={() => props.setSelectedClassPage(doc(props.db, "classes", props.data.id))}
+                    flexGrow={1}
+                >
+                    <Link to="/Class-Page" className='nav-link'>
+                        <Typography variant='h3'>
+                            {props.classes[props.data.id]}
+                        </Typography>
+                        <Typography
+                            variant='h5'
+                            color='text.secondary'
+                        >
+                            {`Grade ${props.data.gradeLevel}`}
+                        </Typography>
+                    </Link>
+                </Box>
+                <Button
+                    color='error'
+                    variant='contained'
+                >
+                    Remove
+                </Button>
+            </Card>
         </>
     );
 }

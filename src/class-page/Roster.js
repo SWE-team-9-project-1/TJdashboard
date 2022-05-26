@@ -74,7 +74,10 @@ function Roster(props) {
                     ...teacherDocs.docs[0].data(),
                     doc: teacherDocs.docs[0]
                 }
-                : null,
+                : {
+                    name: 'Teacher Unassigned',
+                    doc: null
+                },
                 students: studentDocs.docs.map(dc => {
                     return {
                         ...dc.data(),
@@ -87,6 +90,10 @@ function Roster(props) {
 
         fetchData();
     }, []);
+
+    if (state.teacher == null) {
+        return (<></>);
+    }
 
     return (<>
         <Stack
@@ -103,7 +110,7 @@ function Roster(props) {
                         Instructor
                     </Typography>
                 </Box>
-                <Teacher name={state.teacher ? state.teacher.name : 'Teacher Unassigned'} />
+                <Teacher name={state.teacher.name} />
             </Box>
             <Box width='100%'>
                 <Box

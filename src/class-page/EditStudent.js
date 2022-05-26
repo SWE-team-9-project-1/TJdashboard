@@ -22,6 +22,7 @@ function EditStudent(props) {
             <Button
                 onClick={() => props.onRemove()}
                 variant='contained'
+                color='error'
             >
                 Remove From Class
             </Button>
