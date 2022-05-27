@@ -1,1 +1,24 @@
-@import url("https://cdn.syncfusion.com/ej2/material.css");
+.event-calendar {
+    font-family: 'Times New Roman', Times, serif;
+    font-size: 18px;
+    font-weight: bold;
+}
+.fc td {
+    background: rgb(252, 170, 170);
+}
+.event-calendar-1 {
+    margin: 0 auto;
+    max-width: 1400px;
+  }
+.fc {
+    color: rgb(31, 108, 224);
+    font-size: 20px;
+}
+.fc-col-header-cell-cushion {
+    display: inline;
+    color: rgb(31, 108, 224);
+}
+.fc-col-header-cell{
+    color: white
+}
+
