@@ -1,11 +1,8 @@
-import {CalendarComponent} from '@syncfusion/ej2-react-calendars';
-import * as React from "react";
-import * as ReactDOM from "react-dom";
-export default class App extends React.Component {
-    render() {
-        return <CalendarComponent id="calendar"/>;
-    
-    }
-}
-;
-ReactDOM.render(<App />, document.getElementById('element'));
+import React from 'react';
+import ReactDOM from 'react-dom/client';
+import './index.css';
+import App from './App';
+import reportWebVitals from './reportWebVitals';
+
+
+reportWebVitals();
