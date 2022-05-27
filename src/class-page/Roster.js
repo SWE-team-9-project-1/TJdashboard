@@ -1,7 +1,7 @@
 import './classpage.css';
 import AddIcon from '../plus.png';
 import { Box, IconButton, Stack, Typography } from "@mui/material";
-import { collection, doc, getDocs, query, updateDoc, where } from "firebase/firestore";
+import { collection, doc, getDoc, getDocs, query, updateDoc, where } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import Student from "./Student";
 import Teacher from "./Teacher";
@@ -75,7 +75,7 @@ function Roster(props) {
                     doc: teacherDocs.docs[0]
                 }
                 : {
-                    name: 'Teacher Unassigned',
+                    name: null,
                     doc: null
                 },
                 students: studentDocs.docs.map(dc => {
@@ -110,7 +110,23 @@ function Roster(props) {
                         Instructor
                     </Typography>
                 </Box>
-                <Teacher name={state.teacher.name} />
+                <Teacher
+                    db={props.db}
+                    name={state.teacher.name}
+                    setTeacher={dc => {
+                        updateDoc(doc(props.db, 'teachers', dc.id), {
+                            'class': doc(props.db, 'classes', props.clazz.doc.id)
+                        });
+
+                        setState({
+                            teacher: {
+                                name: dc.data().name,
+                                doc: dc
+                            },
+                            students: state.students
+                        });
+                    }}
+                />
             </Box>
             <Box width='100%'>
                 <Box
