@@ -1,14 +1,14 @@
+import logo from './logo.svg';
 import './App.css';
 import { initializeApp } from "firebase/app";
-import { getFirestore, getDocs, collection, doc } from "firebase/firestore";
+import { getFirestore, getDocs, collection } from "firebase/firestore";
+import { useEffect } from 'react';
 import ClassDashboard from './class-dashboard/ClassDashboard';
 import EventCalendar from './event-calendar/EventCalendar';
 import TeacherDirectory from './teacher-directory/TeacherDirectory';
 import StudentDirectory from './student-directory/StudentDirectory';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import Home from './home/Home';
-import ClassPage from './class-page/ClassPage';
-import { useState } from 'react';
 
 
 // Your web app's Firebase configuration
@@ -29,8 +29,6 @@ const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
 function App() {
-    const [selectedClassPage, setSelectedClassPage] = useState(null);
-
     return (
         <BrowserRouter
             className='App'
@@ -42,11 +40,7 @@ function App() {
                 >
                     <Route
                         path='/class-dashboard'
-                        element={<ClassDashboard db={db} setSelectedClassPage={setSelectedClassPage} />}
-                    />
-                    <Route
-                        path='/class-page'
-                        element={<ClassPage db={db} selectedClassPage={selectedClassPage} />}
+                        element={<ClassDashboard db={db}/>}
                     />
                     <Route
                         path='/event-calendar'
