@@ -29,16 +29,16 @@ function Student(props) {
                     >
                         <Typography variant='h5'>Grade:&nbsp;</Typography> {
                             editing
-                            ? <TextField
-                                className='enter-score'
-                                defaultValue={props.score}
-                                inputRef={scoreRef}
-                            /> 
-                            : <Typography
-                                variant='h5'
-                            >
-                                {props.score}
-                            </Typography>
+                                ? <TextField
+                                    className='enter-score'
+                                    defaultValue={props.score}
+                                    inputRef={scoreRef}
+                                />
+                                : <Typography
+                                    variant='h5'
+                                >
+                                    {props.score}
+                                </Typography>
                         }
                     </Box>
                 </Box>
