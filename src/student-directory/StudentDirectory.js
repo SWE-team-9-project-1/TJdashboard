@@ -76,8 +76,7 @@ const Student = (props) => {
         <StyledTableCell align="right">{gradeLevel}</StyledTableCell>
         <StyledTableCell align="right">{teacherName}</StyledTableCell>
         <StyledTableCell align="right">
-            <IconButton
-                onClick={() => setEditing(!editing)}>
+            <IconButton onClick={() => setEditing(!editing)}>
                 <img src={Gear} width={25} height={25} />
             </IconButton>
 

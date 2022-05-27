@@ -17,13 +17,14 @@ const EditStudent = (props) => {
 
     return(
     <>
+        <p></p>
+        <TextField label="Name" size="small" defaultValue={props.data.name} inputRef={nameRef}/>
+        <TextField label="Birthday (mm/dd/yyyy)" size="small" defaultValue={props.data.birthday} inputRef={bdayRef} />
         <Stack
             direction='row'
             spacing={1}
             className='edit-student-button-stack'
         >
-            <TextField label="Name" size="small" defaultValue={props.data.name} inputRef={nameRef}/>
-            <TextField label="Birthday (mm/dd/yyyy)" size="small" defaultValue={props.data.birthday} inputRef={bdayRef} />
             <Button variant="contained" onClick={onSave}>Save Changes</Button>
             <Button variant="contained" onClick={() => props.setEditing(false)}>Discard Changes</Button>
 

@@ -114,40 +114,19 @@ const Teacher = (props) => {
                 </StyledTableCell>
 
             </StyledTableRow>
-            <StyledTableRow>{editing && <p></p>}{editing && <TextField label={"Name"} defaultValue={props.data.name} inputRef={nameRef}></TextField>}{editing && <TextField label={"Years Taught"} defaultValue={props.data.years_taught} inputRef={yearsRef}></TextField>}{editing && <EditTeacher
-                onSave={() => {
-                    setName(nameRef.current.value, yearsRef.current.value);
-                    setEditing(false);
-                    props.bigFunction();
-                }}
-                onDiscard={() => {
-                    setEditing(false);
-                }}
-            ></EditTeacher>}
-
-
-                {/* <Box
-                display='flex'
-                flexDirection='row'
-                alignItems='center'
-                justifyContent='flex-start'
-                minHeight={60}
-            >
-                    <Typography variant='h5'>Grade:&nbsp;</Typography> {
-                        editing
-                            ? <TextField
-                                className='Change Name'
-                                defaultValue={nameRef.current.value}
-                                inputRef={nameRef}
-                            />
-                            : <Typography
-                                variant='h5'
-                            >
-                                {nameRef.current.value}
-                            </Typography>
-                    }
-                </Box> */}
-
+            <StyledTableRow>{editing && <p></p>}
+                {editing && <TextField size="small" label={"Name"} defaultValue={props.data.name} inputRef={nameRef}></TextField>}
+                {editing && <TextField label={"Years Taught"} size="small" defaultValue={props.data.years_taught} inputRef={yearsRef}></TextField>}
+                {editing && <EditTeacher
+                    onSave={() => {
+                        setName(nameRef.current.value, yearsRef.current.value);
+                        setEditing(false);
+                        props.bigFunction();
+                    }}
+                    onDiscard={() => {
+                        setEditing(false);
+                    }}
+                ></EditTeacher>}
 
             </StyledTableRow>
         </>
@@ -204,7 +183,7 @@ function TeacherDirectory(props) {
                                 <StyledTableCell align="right">Grade Taught</StyledTableCell>
                                 <StyledTableCell align="right">Students</StyledTableCell>
                                 <StyledTableCell align="right"># Years Taught</StyledTableCell>
-                                <StyledTableCell align="right">Remove Teacher</StyledTableCell>
+                                <StyledTableCell align="right">Edit/Remove Teacher</StyledTableCell>
                             </StyledTableRow>
                         </TableHead>
 
