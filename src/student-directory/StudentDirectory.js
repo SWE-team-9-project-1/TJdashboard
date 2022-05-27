@@ -1,7 +1,7 @@
 import { collection, getDocs, doc, getDoc, query, where, updateDoc, deleteDoc } from "firebase/firestore";
 import { useState, useEffect } from "react";
 
-import { Box, Button } from '@mui/material';
+import { Box, Button, IconButton } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -12,6 +12,8 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 
 import NewStudent from './NewStudent.js';
+import Gear from './gear.png';
+import EditStudent from './EditStudent.js'
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -63,16 +65,22 @@ const Student = (props) => {
             setTeacherName("Not assigned class");
         }
     }, [props.db])
+
+    const [editing, setEditing] = useState(false);
     
     return (
     <>
     <StyledTableRow key={props.data.name} sx={{ '&:last-child td, &:last-child th': { border: 0 } }}>
         <StyledTableCell component="th" scope="row" sx={{fontWeight: 'bold'}}>{props.data.name}</StyledTableCell>
-        <StyledTableCell align="right">{gradeLevel}</StyledTableCell>
-        {/* <StyledTableCell align="right">{new Date(props.data.birthday.seconds*1000).toDateString()}</StyledTableCell> */}
         <StyledTableCell align="right">{props.data.birthday}</StyledTableCell>
+        <StyledTableCell align="right">{gradeLevel}</StyledTableCell>
         <StyledTableCell align="right">{teacherName}</StyledTableCell>
         <StyledTableCell align="right">
+            <IconButton
+                onClick={() => setEditing(!editing)}>
+                <img src={Gear} width={25} height={25} />
+            </IconButton>
+
             <Button
                 variant="contained"
                 color="error"
@@ -98,6 +106,16 @@ const Student = (props) => {
             </Button>
         </StyledTableCell>
     </StyledTableRow>
+
+    <StyledTableRow>
+        {editing && <EditStudent 
+            data={props.data}
+            setEditing={setEditing}
+            db={props.db} 
+            bigFunction={props.bigFunction}
+        />}
+    </StyledTableRow>
+
     </>
     )
 }
@@ -144,10 +162,10 @@ function StudentDirectory(props) {
         <TableHead>
             <StyledTableRow>
                 <StyledTableCell align="left">Name</StyledTableCell>
-                <StyledTableCell align="right">Grade</StyledTableCell>
                 <StyledTableCell align="right">Birthday</StyledTableCell>
+                <StyledTableCell align="right">Grade</StyledTableCell>
                 <StyledTableCell align="right">Teacher</StyledTableCell>
-                <StyledTableCell align="right">Remove Student</StyledTableCell>
+                <StyledTableCell align="right">Edit/Remove Student</StyledTableCell>
             </StyledTableRow>
         </TableHead>
 
@@ -158,6 +176,7 @@ function StudentDirectory(props) {
                 db={db}
                 students={students}
                 setStudents={setStudents}
+                bigFunction={bigFunction}
             /> )}
         </TableBody>
     </Table>
