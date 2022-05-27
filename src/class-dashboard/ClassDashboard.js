@@ -101,9 +101,10 @@ function ClassDashboard(props) {
                 });
             }
         })
-        bigFunction()
+
 
         littleFunction()
+        bigFunction()
 
     }
 
